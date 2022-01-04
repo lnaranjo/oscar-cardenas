@@ -47,4 +47,25 @@ function getSomeData(url) {
 }
 
 getSomeData("https://unosquare.com"); // { data: [SOME_DATA_HERE] }
+
+// using this keyword
+function classroom(teacher) {
+  return function study() {
+    console.log(`${teacher} says to study ${this.topic}`);
+  };
+}
+
+const assignment = classroom("Oscar");
+const homework = {
+  topic: "JS",
+  assignment,
+};
+
+homework.assignment(); // Oscar says study JS
+
+// using `call` method
+const anotherHomework = {
+  topic: "Math",
+};
+assignment.call(anotherHomework); // Oscar says study Math
 ```
