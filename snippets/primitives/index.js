@@ -32,7 +32,7 @@ console.log(evenNumbers); // [1, 3, 5, 7, 9]
 
 // reduce
 const sumAllValues = numbers.reduce(
-  (accumulator, number) => (accumulator += number),
+  (accumulator, number) => accumulator + number,
   0
 );
 console.log(sumAllValues); // 55
