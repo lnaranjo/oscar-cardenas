@@ -4,22 +4,18 @@
 
 ## Table of content:
 
-### Variables
+### BOOKS
 
-### Arrays
+### Udemy courses
 
-### Objects
+### AsynchronousJavaScriptDeepDive
 
-### Functions
+### DesignPatternsInJavaScript
 
-### Scope and clousers
+### MultithreadedJavaScript_ConcurrencyBeyondTheEventLoop
 
-> #### Variable block-scoped
+### TestingReactWithJestAndTestingLibrary
 
-### Transpilers and final code
+### TheCompleteGuideToAdvancedReactComponentPatterns
 
-### Debugging tools
-
-### Apendixx: Common JS Function Helpers
-
-### Conventions and best practices
+### UnderstandingTypeScript
