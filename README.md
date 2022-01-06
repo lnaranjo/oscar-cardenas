@@ -1,21 +1,18 @@
-# Code this, not that
+# Knowledge Adventures
 
-#### A Unosquare version
+##### By Oscar Cárdenas
 
-## Table of content:
+## Content
 
-### BOOKS
+### Books
 
-### Udemy courses
+- [You Don't Know JS - Get Started](./books/YDKJS_GetStarted/README.md)
+- [You Don't Know JS - Scopes & Closures](./books/YDKJS_ScopesAndClosures/README.md)
 
-### AsynchronousJavaScriptDeepDive
+### Udemy Courses
 
-### DesignPatternsInJavaScript
-
-### MultithreadedJavaScript_ConcurrencyBeyondTheEventLoop
-
-### TestingReactWithJestAndTestingLibrary
-
-### TheCompleteGuideToAdvancedReactComponentPatterns
-
-### UnderstandingTypeScript
+- [Asynchronous JavaScript Deep Dive](./courses/AsynchronousJavaScriptDeepDive/README.md)
+- [Design Patterns in JavaScript](./courses/DesignPatternsInJavaScript/README.md)
+- [Testing React with Jest & Testing Library](./courses/TestingReactWithJestAndTestingLibrary/README.md)
+- [The Complete Guide to Advanced React Component Patterns](./courses/TheCompleteGuideToAdvancedReactComponentPatterns/README.md)
+- [Understanding Typescript](./courses/UnderstandingTypescript/README.md)
