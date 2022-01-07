@@ -66,3 +66,81 @@ promise2.then((text2) => {
   console.log(`Now, execute text 2. ${text2}`);
 });
 ```
+
+> To use promises to get data from remote service, can be use the `fetch` method in the browsers or the package `node-fetch` in nodejs, for example:
+
+```javascript
+fetch('https://someurl', {
+  /* some props if is necessary, by default method is GET */
+})
+  // tranform the first request into json object
+  .then((response) => response.json())
+  // return a second fetch from another url
+  .then((data) => fetch('https://another_api'))
+  // transform to json the second request
+  .then((responseAnoter) => responseAnother.json())
+  // prints the data of the last fetch
+  .then((finalData) => console.log(finalData));
+  // if exist an error, catch will be activated
+  .catch(error => console.error(error))
+```
+
+> Consider the following 2 APIs to make request; StarWarsAPI, JSONPlaceholder, so the examples can be write in the next examples:
+
+```javascript
+const swapi = function (id) {
+  let url = 'https://swapi.com/api/people/';
+
+  fetch(`${url}${id}`)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(`response from people ${id}`);
+      return fetch(data.homeworld);
+    })
+    .then((hwResponse) => hwResponse.json())
+    .then(console.log)
+    .catch(console.error);
+};
+
+swapi(1);
+console.log('End of code');
+```
+
+> The output for the previous code, will be:
+
+```text
+$ End of code
+$ response from people 1
+$ "json data" from homeworld for people 1
+```
+
+> Now, lets check the JSONPlaceholder API:
+
+```javascript
+const baseURL = 'https://jsonplaceholder.typicode.com';
+const jsonplaceholderAPI = function (path) {
+  return fetch(`${baseURL}${path}`).then((response) => response.json());
+};
+
+const todos = jsonplaceholderAPI('/todos');
+todos.then(console.log); // print the list of todos
+
+/**
+ * Save custom data with POST method
+ */
+
+fetch(`${baseURL}/todos/5`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    title: 'Learn promises',
+    userId: 1,
+    completed: false,
+  }),
+})
+  .then((response) => response.json())
+  .then(console.log)
+  .catch(console.error);
+```

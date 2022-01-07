@@ -1,6 +1,6 @@
 # Exercise 0
 
-### Definition
+### Objective
 
 What would it take to make it asynchronous using setTimeout?
 
