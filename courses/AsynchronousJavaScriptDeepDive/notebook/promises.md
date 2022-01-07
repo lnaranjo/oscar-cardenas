@@ -144,3 +144,100 @@ fetch(`${baseURL}/todos/5`, {
   .then(console.log)
   .catch(console.error);
 ```
+
+### Create custom promises
+
+In JS is posible create custom promises using the constructor `Promise` defined as a new instance.
+
+> Lets create a single custom promise
+
+```javascript
+const myCustomPromise = new Promise(function (resolve, reject) {
+  setTimeout(function () {
+    resolve('After 3s send this string');
+  }, 3000);
+});
+```
+
+> Now can use the `myCustomPromise` function:
+
+```javascript
+const promise = myCustomPromise();
+console.log(promise); // { Promise: {...} }
+```
+
+> To execute promise and recieve the string is necessary use `then` to recive data:
+
+```javascript
+const promise = myCustomPromise();
+
+promise.them((text) => console.log(text)); // After 3s send this string
+```
+
+### The `catch` method
+
+> Another important method to use is `catch` to handle error in a promise. Consider the next example using a wrapper to setTimeout:
+
+```javascript
+const promiseTimeout = function (timeInMS) {
+  return new Promise(function (resolve, reject) {
+    if (isNaN(timeInMS)) {
+      reject('timeInMS must be a number');
+    }
+    setTimeout(resolve, timeInMS);
+  });
+};
+
+// For this case, catch will be executed and show the error in console
+promiseTimeout('notNumber')
+  .then(() => console.log('DONE'))
+  .catch(console.error);
+```
+
+### The `finally` method
+
+Another method in the standard promise chain is `finally`, it provides a way to always execute a callback in cases when exists or not an error as a last part of the promise, the definition is like this:
+
+```javascript
+myPromise()
+  .then((reponse) => console.log('Some response'))
+  .catch((error) => console.error('Some error'))
+  // finally runs always, even when `then` or `catch` were not executed
+  .finally(() => console.log('Runs in last part of promises'));
+```
+
+### The `all` method
+
+The `all` method works passing an array of promises, it returns a promise will only be fulfilled once of the promises inside in the array, but if one promise is failed inmediatly reject all promises.
+
+> Consider this example to show how works it
+
+```javascript
+const firstName = function () {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('Oscar');
+    }, 3000);
+  });
+};
+
+const lastName = function () {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('Cardenas');
+    }, 4000);
+  });
+};
+
+const middleName = function () {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('Jesus');
+    }, 7000);
+  });
+};
+
+Promise.all([firstName(), middleName(), lastName()]).then((messages) => {
+  console.log(messages); // ['Oscar', 'Jesus', 'Cardenas']
+});
+```

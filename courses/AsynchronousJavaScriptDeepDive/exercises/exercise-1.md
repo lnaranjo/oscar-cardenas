@@ -9,7 +9,7 @@ Use an input to enter a word an return information about request to the `Wordnik
 > First, whe need declare global information about the keys, baseURL
 
 ```javascript
-const wordnikWord = 'http://api.wordnik.com/v4/word.json/';
+const wordnikWord = 'http://api.wordnik.com/v4/word.json';
 const apiKey = '2efe06dd56a60633b30010e4d970da03b55279db9896d7127';
 ```
 
