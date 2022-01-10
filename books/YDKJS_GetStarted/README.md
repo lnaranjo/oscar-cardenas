@@ -1,11 +1,5 @@
 # You Don't Know JS - Get Started
 
-## Conclusion
-
-<!-- TODO: Write a little conclusion for this book -->
-
-WIP...
-
 ## Notebook topics:
 
 - [Arrays](./notebook/arrays.md)
