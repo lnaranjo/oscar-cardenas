@@ -1,11 +1,11 @@
-# Best practices
+# Tips
 
 ### Strict mode
 
 ```javascript
 // only whitespace and comments are allowed
 // before the use-strict pragma
-"use strict";
+'use strict';
 // the rest of the file runs in strict mode
 // ...
 ```
@@ -18,7 +18,7 @@ let isNumber = true;
 
 if (isNumber) {
   // bad: reusable a boolean variable with a new string
-  isNumber = "I am a number";
+  isNumber = 'I am a number';
 }
 ```
 
@@ -26,12 +26,12 @@ if (isNumber) {
 
 ```javascript
 // using double equals (==) is true, because is a loose strict comparison
-42 == "42"; // true
+42 == '42'; // true
 1 == true; // true
 
 // using triple equal (===) is false, because this comparison is strict and
 // evaluates the value and datatype
-42 === "42"; // false
+42 === '42'; // false
 1 === true; // false
 ```
 
