@@ -2,9 +2,9 @@
 
 ## List of content
 
-- [Asynchronous vs Synchronous](./notebook/synchronous-vs-asynchronous.md)
-- [Eventloop](./notebook/eventloop.md)
-- [Callbacks](./notebook/callbacks.md)
-- [Promises](./notebook/promises.md)
-- [Async & Await](./notebook/async-await.md)
-- [Generators](./notebook/generators.md)
+- [Asynchronous vs Synchronous](./notebook/en/synchronous-vs-asynchronous.md)
+- [Eventloop](./notebook/en/eventloop.md)
+- [Callbacks](./notebook/en/callbacks.md)
+- [Promises](./notebook/en/promises.md)
+- [Async & Await](./notebook/en/async-await.md)
+- [Generators](./notebook/en/generators.md)
