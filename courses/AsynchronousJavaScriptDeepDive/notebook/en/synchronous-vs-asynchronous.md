@@ -22,9 +22,7 @@
 | More performant                    | not         | yes          |
 | Code blocking                      | yes         | not          |
 
-Considered the next examples to map some diferences between checking the next examples.
-
-Example 1:
+If we considering the next examples to map some differences between checking the next examples.
 
 ```javascript
 const syncTest = function () {
@@ -41,16 +39,16 @@ syncTest();
 syncTest2();
 ```
 
-> The order to show in the console is:
+The console output would be:
 
 ```
-Log in console: Start of code
+$ Start of code
 Launch the alert
-Log in console: End of code
-Log in console: Inside of second function
+$ End of code
+$ Inside of second function
 ```
 
-> Now, consider the next changes in the code:
+Now, consider the next changes in the code:
 
 ```javascript
 const asyncTest = function () {
@@ -69,13 +67,11 @@ asyncTest();
 asyncTest2();
 ```
 
-> The output is diferent, because the method `setTimeout` delay the execution in 1 second, so the new output is:
+The output is diferent, because the method `setTimeout` delay the execution in 1 second, so the new output is:
 
 ```
-Log in console: Inside of second function
-Log in console: Start of code
+$ Inside of second function
+$ Start of code
 Launch the alert
-Log in console: End of code
+$ End of code
 ```
-
-To understand why happen this, is necessary understand how works the [Eventloop](./eventloop.md) in JS.

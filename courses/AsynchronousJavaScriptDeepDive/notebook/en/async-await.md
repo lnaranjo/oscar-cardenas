@@ -2,7 +2,7 @@
 
 The `async & await` keywords appeared in JS after promises, the main purpose is to simplify our promise code. Basically it enables to write promise based code as if it were synchronous but without blocking the execution threat.
 
-> The next example shows how to create an async function:
+The next example shows how to create an async function:
 
 ```javascript
 // use the reserved word `async` to define
@@ -11,10 +11,10 @@ const myAsyncFunction = async function () {
 };
 ```
 
-> Now, compare a plain function vs async function:
+Now let's look at the difference between an asynchronous function and a synchronous function.
 
 ```javascript
-// declare plain functio
+// declare plain function
 const plainFunction = function () {
   console.log('plainFunction');
   return 'done';
@@ -35,17 +35,12 @@ console.log(plainResult); // done
 console.log(asyncResult); // { Promise: {...} }
 ```
 
-In the previous example, the main difference between a plainFunction is it returns a string ('Done') while async function returns a promise.
-
-> A simple example to consume data from the StarWarsAPI (swapi)
+The asynchronous functions allow us to make requests to the remote APIs, in the following example we perform preticion of the films of the Star Wars series:
 
 ```javascript
 const getFilms = async function () {
   const url = 'https://swapi.com/api/films';
-
-  // make the request
-  const data = await fetch(url).then((response) => response.json());
-
+  const data = await fetch(url).then((response) => response.json()); // se realiza la peticion
   const films = data.results;
 
   console.log({ films }); // print a list of all results
@@ -57,9 +52,9 @@ getFilms();
 console.log('Print this because is an async function');
 ```
 
-### Error hanlder
+### Error handling
 
-To handler errors when using async/await is possible use `try/catch` block code, the next example show a short way to implements that.
+For error handling using `async/await` we can use the `try/catch` block statement to contain the error and define a controlled output stream.
 
 ```javascript
 async function someFunctionWithError() {
@@ -74,9 +69,9 @@ async function someFunctionWithError() {
 
 ### Promises / array of promises
 
-With async/await is possible make request by example of an array of promises. In the next example many ways to operate with that.
+Sometimes it is necessary to make multiple requests to a service or to perform asynchronous activities in the same execution time; to do this, it is possible to generate arrays of promises and to be able to execute them at the same time.
 
-> Using `for - of` to preview some promises
+Let's use the `for-of` statement to execute each of the requests in the promise array:
 
 ```javascript
 const promises = [fetch(url1), fetch(url2), fetch(url3)];
@@ -87,7 +82,7 @@ for await (let promise of promises) {
 }
 ```
 
-> Using `Promise.all` to make all requests:
+It is also possible to execute the requests using the `Promise.all` statement to execute the requests and handle the responses in a different processing, let's see the following example:
 
 ```javascript
 (async function () {
