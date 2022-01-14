@@ -7,7 +7,7 @@ When piecewise object construction is complicated, provide an API for doing it s
 - Some objects are simple and can be created in a single initializer call.
 - Other objects require a lot of ceremony to create.
 - Having an object with "N" initializer arguments is not productive.
-- Instead, opt for piecewise constuction.
+- Instead, it opts for piecemeal construction.
 - Builder provides an API for constructing an object step-by-step
 
 ## Examples
