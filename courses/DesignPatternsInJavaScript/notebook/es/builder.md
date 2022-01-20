@@ -2,7 +2,7 @@
 
 Cuando la construcción de objetos sea complicada, se puede exponer una API para crear objetos de forma optimizada.
 
-## Motivation
+### Motivación
 
 - Algunos objetos son sencillos y pueden crearse con una sola llamada al iniciarse.
 - Otros objetos requieren mucha ceremonia para su creación.
@@ -10,16 +10,7 @@ Cuando la construcción de objetos sea complicada, se puede exponer una API para
 - En su lugar, opta por la constucción a trozos.
 - Un `builder` proporciona una API para construir un objeto paso a paso.
 
-## Consideraciones
-
-- Un `builder` es un componente separado para construir un objeto.
-- Un `builder` es usualmente representado por el ser un método estático dentro de la clase.
-- Los métodos fluidos son aquellos que permiten hacer encadenamiento de métodos y solo retornan la misma instancia
-- Permite que se puedan construir interfaces con difrentes constructores tomando la clase base.
-
-## Ejemplos
-
-### Ejemplo básico de un `builder`
+### Implementación
 
 Supongamos que necesitamos crear objetos de forma sencilla de una clase, para ello definamos como primer paso la clase llamada `Tag`:
 
@@ -102,3 +93,10 @@ builder
   .addChildFluent('li', 'bar')
   .addChildFluent('li', 'baz');
 ```
+
+### Resumen
+
+- Un `builder` es un componente separado para construir un objeto.
+- Un `builder` es usualmente representado por el ser un método estático dentro de la clase.
+- Los métodos fluidos son aquellos que permiten hacer encadenamiento de métodos y solo retornan la misma instancia
+- Permite que se puedan construir interfaces con difrentes constructores tomando la clase base.

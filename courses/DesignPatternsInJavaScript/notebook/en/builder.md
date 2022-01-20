@@ -2,7 +2,7 @@
 
 When piecewise object construction is complicated, provide an API for doing it succinctly
 
-## Motivation
+### Motivation
 
 - Some objects are simple and can be created in a single initializer call.
 - Other objects require a lot of ceremony to create.
@@ -10,14 +10,7 @@ When piecewise object construction is complicated, provide an API for doing it s
 - Instead, it opts for piecemeal construction.
 - Builder provides an API for constructing an object step-by-step
 
-## Considerations
-
-- A builder is a separate component for building an object
-- Can either give a builder an initializer or return it via a static function
-- To make builder fluent, retun self
-- Different faces of an object can be build with different builders working in tandem via a base class
-
-## Examples
+### Implementation
 
 ### Builder Basic Example
 
@@ -110,3 +103,10 @@ builder
   .addChildFluent('li', 'bar')
   .addChildFluent('li', 'baz');
 ```
+
+## Considerations
+
+- A builder is a separate component for building an object
+- Can either give a builder an initializer or return it via a static function
+- To make builder fluent, retun self
+- Different faces of an object can be build with different builders working in tandem via a base class

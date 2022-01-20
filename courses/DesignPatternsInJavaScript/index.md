@@ -6,3 +6,66 @@
 
 - Design Principles:
   - [Builder](./notebook/en/builder.md)
+    - Separate component for when object construction gets too complicated.
+    - Can create mutually cooperating sub-builders.
+    - Often has a fluent interface.
+  - [Factory](./notebook/en/factory.md)
+    - Factory method more expressive than constructor.
+    - A separate class with factory methods is a Factory.
+    - Class hierarchies can have corresponding hierarchies of factories (Abstract Factory).
+  - [Prototype](./notebook/en/prototype.md)
+    - Creation of object from an existing object.
+    - Requires either explicit deep copy or copy through serialization.
+    - Additional work required to preserve type.
+  - [Singleton](./notebook/en/singleton.md)
+    - When you need to ensure just a single instance exists.
+    - Can return same object from constructor on every call.
+    - Direct dependence on a Singleton is dangerous.
+  - [Adapter](./notebook/en/adapter.md)
+    - Converts the interface you get to the interface you need.
+  - [Bridge](./notebook/en/bridge.md)
+    - Decouple abstraction from implementation.
+  - [Composite](./notebook/en/composite.md)
+    - Allows clients to treat individual objects and composition of objects uniformly.
+  - [Decorator](./notebook/en/decorator.md)
+    - Attach additional responsabilities to objects without modifiying those object or inheriting from them.
+    - Decorators are composable with each other.
+  - [Façade](./notebook/en/facade.md)
+    - Provide a single unified interface over a set of system/interfaces.
+  - [Flyweight](./notebook/en/flyweight.md)
+    - Memory saving technique
+    - Efficiently support very large numbers of similar objects.
+  - [Proxy](./notebook/en/proxy.md)
+    - Provide a surrogate object that forwards calls to the real object whilte performing additional fucntions.
+    - Access control, communication, logging, etc.
+  - [Chain of Responsability](./notebook/en/chain-of-responsibility.md)
+    - Allow components to process information/events in a chain.
+    - Each element in the chain refers to next element.
+    - Make a list and go through it.
+  - [Command](./notebook/en/command.md)
+    - Encapsulate a request into a separate object.
+    - Good for audit, replay, undo/redo.
+    - Part of CQS/CQRS
+  - [Interpreter](./notebook/en/interpreter.md)
+    - Transform textual input into object-oriented structures.
+    - Used by interpreters, compilers, static analysis tools, etc.
+    - Compiler theory is a separate branch of Computer Science.
+  - [Iterator](./notebook/en/iterator.md)
+    - Provides an interface for accessing elements of an aggregate object.
+    - Object can be made iterable (for loop).
+  - [Mediator](./notebook/en/mediator.md)
+    - Provides mediation servies between two objects.
+  - [Memento](./notebook/en/memento.md)
+    - Yields tokens representing system states.
+    - Tokens do not allow direct manipulation, but can be used in appropriate APIs.
+  - [Observer](./notebook/en/observer.md)
+    - Allows notifications of changes/happening in a component.
+  - [State](./notebook/en/state.md)
+    - We model system by having one of a possible states and transitions between these states.
+    - Such a system is called a `state machine`.
+    - Special frameworks exists to orchestrate state machines.
+  - [Strategy](./notebook/en/strategy.md) and [Template method](./notebook/en/template-method.md)
+    - Both define a skeleton algorithm with details filled in by implementor.
+    - Strategy uses ordinary composition, template method uses inheritance.
+  - [Visitor](./notebook/en/visitor.md)
+    - Allows non-intrusive addition of functionality tho hierarchies.
