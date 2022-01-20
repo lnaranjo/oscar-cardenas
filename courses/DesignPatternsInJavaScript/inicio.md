@@ -1,0 +1,71 @@
+# Design Patterns in JavaScript
+
+## Contenido
+
+- [SOLID Design Principles](./notebook/es/SOLID.md)
+
+- Design Principles:
+  - [Builder](./notebook/es/builder.md)
+    - Separa el componente para la construcción de objetos se complica demasiado.
+    - Puede crear cooperación mutua de los sub-constructores.
+    - Suele tener una interfaz fluida.
+  - [Factory](./notebook/es/factory.md)
+    - El método de fábrica es más expresivo que el constructor.
+    - Una clase independiente con métodos es una Fábrica.
+    - Las jerarquías de clases pueden tener sus correspondientes jerarquías de fábricas (Abstract Factory).
+  - [Prototype](./notebook/es/factory.md)
+    - Creación de un objeto a partir de un objeto existente.
+    - Requiere una copia profunda explícita o una copia a través de la serialización.
+    - Trabajos adicionales necesarios para conservar el tipo.
+  - [Singleton](./notebook/es/singleton.md)
+    - Cuando se necesita asegurar la existencia de una sola instancia.
+    - Puede devolver el mismo objeto del constructor en cada llamada.
+    - La dependencia directa de un Singleton es peligrosa.
+  - [Adapter](./notebook/es/adapter.md)
+    - Convierte la interfaz que obtienes en la interfaz que necesitas.
+  - [Bridge](./notebook/es/bridge.md)
+    - Desacopla la abstracción de la implementación.
+  - [Composite](./notebook/es/composite.md)
+    - Permite a los clientes tratar los objetos individuales y la composición de objetos de manera uniforme.
+  - [Decorator](./notebook/es/decorator.md)
+    - Adjunta responsabilidades adicionales a los objetos sin modificar esos objetos ni heredar de ellos.
+    - Los decoradores son componibles entre sí.
+  - [Façade](./notebook/es/facade.md)
+    - Proporcionan una única interfaz unificada sobre un conjunto de sistemas/interfaces.
+  - [Flyweight](./notebook/es/flyweight.md)
+    - Técnica de ahorro de memoria
+    - Soportar eficientemente un gran número de objetos similares.
+  - [Proxy](./notebook/es/proxy.md)
+    - Proporciona un objeto sustituto que reenvía las llamadas al objeto real mientras realiza funciones adicionales.
+    - Control de acceso, comunicación, registro, etc.
+  - [Chain of Responsability](./notebook/es/chain-of-responsibility.md)
+    - Permitir que los componentes procesen información/eventos en una cadena.
+    - Cada elemento de la cadena hace referencia al siguiente elemento.
+    - Hacer una lista y recorrerla.
+  - [Command](./notebook/es/command.md)
+    - Encapsular una solicitud en un objeto separado.
+    - Bueno para la auditoría, la repetición, deshacer/rehacer.
+    - Parte de CQS/CQRS
+  - [Interpreter](./notebook/es/interpreter.md)
+    - Transformar la entrada textual en estructuras orientadas a objetos.
+    - Utilizado por intérpretes, compiladores, herramientas de análisis estático, etc.
+    - La teoría de los compiladores es una rama independiente de la informática.
+  - [Iterator](./notebook/es/iterator.md)
+    - Proporciona una interfaz para acceder a los elementos de un objeto agregado.
+    - El objeto puede hacerse iterable (bucle for).
+  - [Mediator](./notebook/es/mediator.md)
+    - Proporciona servicios de mediación entre dos objetos.
+  - [Memento](./notebook/es/memento.md)
+    - Produce tokens que representan estados del sistema.
+    - Los tokens no permiten la manipulación directa, pero pueden ser utilizados en las APIs apropiadas.
+  - [Observer](./notebook/es/observer.md)
+    - Permite las notificaciones de los cambios/sucesos en un componente.
+  - [State](./notebook/es/state.md)
+    - Modelamos el sistema teniendo uno de los posibles estados y transiciones entre estos estados.
+    - Este sistema se denomina "máquina de estados".
+    - Existen marcos especiales para orquestar máquinas de estado.
+  - [Strategy](./notebook/es/strategy.md) and [Template method](./notebook/es/template-method.md)
+    - Ambos definen un esqueleto de algoritmo con detalles completados por el implementador.
+    - La estrategia utiliza la composición ordinaria, el método de la plantilla utiliza la herencia.
+  - [Visitor](./notebook/es/visitor.md)
+    - Permite la adición no intrusiva de funcionalidad a las jerarquías.
