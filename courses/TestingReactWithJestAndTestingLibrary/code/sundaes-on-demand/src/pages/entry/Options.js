@@ -2,18 +2,23 @@ import { useState, useEffect } from 'react';
 import Row from 'react-bootstrap/Row';
 import ScoopOption from './ScoopOption';
 import ToppingOption from './ToppingOption';
+import AlertBanner from '../../commons/AlertBanner';
 
 export default function Options({ optionType = 'scoops' }) {
   const [items, setItems] = useState([]);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:3030/${optionType}`)
       .then((response) => response.json())
       .then(setItems)
-      .catch(console.error);
-  }, [optionType]);
+      .catch(() => setHasError(!hasError));
+  }, [optionType, hasError]);
 
-  // TODO: replace null with ToppingOption when available
+  if (hasError) {
+    return <AlertBanner />;
+  }
+
   const ItemComponent =
     (optionType === 'scoops' && ScoopOption) || ToppingOption;
 
