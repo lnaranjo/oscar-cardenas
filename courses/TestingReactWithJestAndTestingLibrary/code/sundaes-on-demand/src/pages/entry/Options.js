@@ -18,7 +18,7 @@ export default function Options({ optionType = 'scoops' }) {
     fetch(`http://localhost:3030/${optionType}`)
       .then((response) => response.json())
       .then((data) => !isCancelled && setItems(data))
-      .catch(() => setHasError(!hasError));
+      .catch(() => !isCancelled && setHasError(!hasError));
 
     return () => {
       isCancelled = true;
