@@ -13,18 +13,28 @@ export default function OrderSummary({ setOrderPhase }) {
     );
   });
 
-  const toppingArr = Array.from(orderDetails.toppings.entries());
-  const toppingList = toppingArr.map(([key, value]) => (
-    <li key={key}> {key} </li>
-  ));
+  let toppingList = null;
+  const hasToppings = orderDetails.toppings.size > 0;
+  if (hasToppings) {
+    const toppingArr = Array.from(orderDetails.toppings.entries());
+    toppingList = (
+      <>
+        <h2>Toppings: {orderDetails.totals.toppings}</h2>
+        <ul>
+          {toppingArr.map(([key, value]) => (
+            <li key={key}> {key} </li>
+          ))}
+        </ul>
+      </>
+    );
+  }
 
   return (
     <div>
       <h1>Order Summary</h1>
       <h2>Scoops: {orderDetails.totals.scoops}</h2>
       <ul>{scoopList}</ul>
-      <h2>Toppings: {orderDetails.totals.toppings}</h2>
-      <ul>{toppingList}</ul>
+      {toppingList}
       <SummaryForm setOrderPhase={setOrderPhase} />
     </div>
   );

@@ -8,12 +8,17 @@ export default function OrderConfirmation({ setOrderPhase }) {
   const [orderNumber, setOrderNumber] = useState(null);
 
   useEffect(() => {
+    let isCancelled = false;
     fetch('http://localhost:3030/order', {
       method: 'POST',
     })
       .then((response) => response.json())
-      .then(({ orderNumber }) => setOrderNumber(orderNumber))
-      .then(console.error);
+      .then(({ orderNumber }) => !isCancelled && setOrderNumber(orderNumber))
+      .catch(console.error);
+
+    return () => {
+      isCancelled = true;
+    };
   }, []);
 
   function handleClick() {

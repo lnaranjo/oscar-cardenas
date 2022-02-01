@@ -14,10 +14,15 @@ export default function Options({ optionType = 'scoops' }) {
   const [orderDetails, updateItemCount] = useOrderDetails();
 
   useEffect(() => {
+    let isCancelled = false;
     fetch(`http://localhost:3030/${optionType}`)
       .then((response) => response.json())
-      .then(setItems)
+      .then((data) => !isCancelled && setItems(data))
       .catch(() => setHasError(!hasError));
+
+    return () => {
+      isCancelled = true;
+    };
   }, [optionType, hasError]);
 
   if (hasError) {
