@@ -8,16 +8,23 @@ export default function ScoopOption({ name, imagePath, updateItemCount }) {
 
   function handleChange(event) {
     const currentValue = event.target.value;
-    updateItemCount(name, currentValue);
+
+    if (!currentValue.length) {
+      return updateItemCount(name, 0);
+    }
 
     // make sure we are using a number and not a string to validate
     const currentValueFloat = parseFloat(currentValue);
 
-    setIsValid(
+    // check the value is valid
+    const valueIsValid =
       currentValueFloat >= 0 &&
-        currentValueFloat <= 10 &&
-        Math.floor(currentValueFloat) === currentValue
-    );
+      currentValueFloat <= 10 &&
+      Math.floor(currentValueFloat) === +currentValue;
+
+    setIsValid(valueIsValid);
+
+    valueIsValid && updateItemCount(name, currentValue);
   }
 
   return (
