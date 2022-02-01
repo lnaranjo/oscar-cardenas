@@ -4,8 +4,17 @@ import Button from 'react-bootstrap/Button';
 import Popover from 'react-bootstrap/Popover';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
-export default function SummaryFrom() {
+import { phases } from '../../constants';
+
+export default function SummaryFrom({ setOrderPhase }) {
   const [tcChecked, setTcChecked] = useState(false);
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    setOrderPhase(phases.COMPLETED);
+  }
 
   const popover = (
     <Popover id="popover-basic">
@@ -23,7 +32,7 @@ export default function SummaryFrom() {
   );
 
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Form.Group controlId="terms-and-conditions">
         <Form.Check
           type="checkbox"

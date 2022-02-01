@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Row from 'react-bootstrap/Row';
 import ScoopOption from './ScoopOption';
 import ToppingOption from './ToppingOption';
-import AlertBanner from '../../commons/AlertBanner';
+import AlertBanner from '../../common/AlertBanner';
 import { priceItems } from '../../constants';
 import { useOrderDetails } from '../../contexts/OrderDetails';
 import { formatCurrency } from '../../utilities';
