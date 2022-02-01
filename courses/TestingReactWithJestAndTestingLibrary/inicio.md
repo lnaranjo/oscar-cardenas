@@ -9,3 +9,4 @@
 ## Apps con tests:
 
 - [`Color Button`](./code/color-button/README.md)
+- [`Sundaes on demand`](./code/sundaes-on-demand/README.md)
