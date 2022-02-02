@@ -17,7 +17,7 @@
 - [Asynchronous JavaScript Deep Dive](./courses/AsynchronousJavaScriptDeepDive/index.md)
 - [Design Patterns in JavaScript](./courses/DesignPatternsInJavaScript/index.md)
 - [Testing React with Jest & Testing Library](./courses/TestingReactWithJestAndTestingLibrary/README.md)
-- [The Complete Guide to Advanced React Component Patterns](./courses/TheCompleteGuideToAdvancedReactComponentPatterns/README.md)
+- [The Complete Guide to Advanced React Component Patterns](./courses/TheCompleteGuideToAdvancedReactComponentPatterns/index.md)
 - [Understanding Typescript](./courses/UnderstandingTypescript/README.md)
 
 ---
@@ -35,5 +35,5 @@
 - [Asynchronous JavaScript Deep Dive](./courses/AsynchronousJavaScriptDeepDive/inicio.md)
 - [Design Patterns in JavaScript](./courses/DesignPatternsInJavaScript/inicio.md)
 - [Testing React with Jest & Testing Library](./courses/TestingReactWithJestAndTestingLibrary/README.md)
-- [The Complete Guide to Advanced React Component Patterns](./courses/TheCompleteGuideToAdvancedReactComponentPatterns/README.md)
+- [The Complete Guide to Advanced React Component Patterns](./courses/TheCompleteGuideToAdvancedReactComponentPatterns/inicio.md)
 - [Understanding Typescript](./courses/UnderstandingTypescript/README.md)
