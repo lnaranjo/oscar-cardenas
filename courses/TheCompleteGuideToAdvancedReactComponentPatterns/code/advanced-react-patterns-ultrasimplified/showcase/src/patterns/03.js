@@ -1,8 +1,21 @@
-import React, { useState, useCallback, useLayoutEffect } from 'react';
+import React, {
+  useMemo,
+  useState,
+  useContext,
+  useCallback,
+  useLayoutEffect,
+  createContext,
+} from 'react';
 import mojs from 'mo-js';
 import { generateRandomNumber } from '../utils/generateRandomNumber';
 
 import styles from './index.css';
+
+/** ====================================
+ *      Define custom context
+==================================== **/
+const MediumClapContext = createContext({});
+const { Provider } = MediumClapContext;
 
 /** ====================================
  *      Custom hook for animation
@@ -105,7 +118,8 @@ const useClapAnimation = ({ clapEl, clapCountEl, clapTotalEl }) => {
  *      🔰SubComponents
 Smaller Component used by <MediumClap />
 ==================================== **/
-const ClapIcon = ({ isClicked }) => {
+const ClapIcon = () => {
+  const { isClicked } = useContext(MediumClapContext);
   return (
     <span>
       <svg
@@ -121,7 +135,8 @@ const ClapIcon = ({ isClicked }) => {
   );
 };
 
-const ClapCount = ({ count, setRef }) => {
+const ClapCount = () => {
+  const { count, setRef } = useContext(MediumClapContext);
   return (
     <span ref={setRef} data-refkey="clapCountRef" className={styles.count}>
       +{count}
@@ -129,7 +144,8 @@ const ClapCount = ({ count, setRef }) => {
   );
 };
 
-const CountTotal = ({ countTotal, setRef }) => {
+const CountTotal = () => {
+  const { countTotal, setRef } = useContext(MediumClapContext);
   return (
     <span ref={setRef} data-refkey="clapTotalRef" className={styles.total}>
       {countTotal}
@@ -148,10 +164,10 @@ const initialState = {
   countTotal: generateRandomNumber(500, 10000),
 };
 
-const MediumClap = () => {
+const MediumClap = ({ children }) => {
   const [{ clapRef, clapCountRef, clapTotalRef }, setRefs] = useState({});
   const [clapState, setClapState] = useState(initialState);
-  const { count, countTotal, isClicked } = clapState;
+  const { count } = clapState;
 
   const animationTimeline = useClapAnimation({
     clapEl: clapRef,
@@ -171,30 +187,34 @@ const MediumClap = () => {
     // 👉 prop from HOC
     animationTimeline.replay();
 
-    setClapState({
+    setClapState((prevState) => ({
       isClicked: true,
       count: Math.min(count + 1, MAXIMUM_USER_CLAP),
-      countTotal: count < MAXIMUM_USER_CLAP ? countTotal + 1 : countTotal,
-    });
+      countTotal:
+        count < MAXIMUM_USER_CLAP
+          ? prevState.countTotal + 1
+          : prevState.countTotal,
+    }));
   };
 
+  const memoizedValues = useMemo(
+    () => ({ ...clapState, setRef }),
+    [clapState, setRef]
+  );
+
   return (
-    <button
-      ref={setRef}
-      data-refkey="clapRef"
-      className={styles.clap}
-      onClick={handleClapClick}
-    >
-      <ClapIcon isClicked={isClicked} />
-      <ClapCount count={count} setRef={setRef} />
-      <CountTotal countTotal={countTotal} setRef={setRef} />
-    </button>
+    <Provider value={memoizedValues}>
+      <button
+        ref={setRef}
+        data-refkey="clapRef"
+        className={styles.clap}
+        onClick={handleClapClick}
+      >
+        {children}
+      </button>
+    </Provider>
   );
 };
-
-function getDisplayName(WrappedComponent) {
-  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
-}
 
 /** ====================================
     *        🔰USAGE
@@ -202,7 +222,13 @@ function getDisplayName(WrappedComponent) {
     may consume the component API
 ==================================== **/
 const Usage = () => {
-  return <MediumClap />;
+  return (
+    <MediumClap>
+      <ClapIcon />
+      <ClapCount />
+      <CountTotal />
+    </MediumClap>
+  );
 };
 
 export default Usage;
