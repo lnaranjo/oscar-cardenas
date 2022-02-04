@@ -216,6 +216,11 @@ const MediumClap = ({ children }) => {
   );
 };
 
+// alternative export strategy for related components
+MediumClap.Icon = ClapIcon;
+MediumClap.Count = ClapCount;
+MediumClap.Total = CountTotal;
+
 /** ====================================
     *        🔰USAGE
     Below's how a potential user
@@ -224,9 +229,9 @@ const MediumClap = ({ children }) => {
 const Usage = () => {
   return (
     <MediumClap>
-      <ClapIcon />
-      <ClapCount />
-      <CountTotal />
+      <MediumClap.Icon />
+      <MediumClap.Count />
+      <MediumClap.Total />
     </MediumClap>
   );
 };
