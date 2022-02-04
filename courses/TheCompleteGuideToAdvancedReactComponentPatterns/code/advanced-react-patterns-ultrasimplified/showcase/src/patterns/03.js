@@ -1,6 +1,7 @@
 import React, {
   useMemo,
   useState,
+  useEffect,
   useContext,
   useCallback,
   useLayoutEffect,
@@ -164,7 +165,7 @@ const initialState = {
   countTotal: generateRandomNumber(500, 10000),
 };
 
-const MediumClap = ({ children }) => {
+const MediumClap = ({ children, onClap }) => {
   const [{ clapRef, clapCountRef, clapTotalRef }, setRefs] = useState({});
   const [clapState, setClapState] = useState(initialState);
   const { count } = clapState;
@@ -174,6 +175,10 @@ const MediumClap = ({ children }) => {
     clapCountEl: clapCountRef,
     clapTotalEl: clapTotalRef,
   });
+
+  useEffect(() => {
+    onClap && onClap(clapState);
+  }, [count]);
 
   // save node
   const setRef = useCallback((node) => {
@@ -227,12 +232,17 @@ MediumClap.Total = CountTotal;
     may consume the component API
 ==================================== **/
 const Usage = () => {
+  const [count, setCount] = useState(0);
+  const handleClap = (clapState) => setCount(clapState.count);
   return (
-    <MediumClap>
-      <MediumClap.Icon />
-      <MediumClap.Count />
-      <MediumClap.Total />
-    </MediumClap>
+    <div style={{ width: '100%' }}>
+      <MediumClap onClap={handleClap}>
+        <MediumClap.Icon />
+        <MediumClap.Count />
+        <MediumClap.Total />
+      </MediumClap>
+      <div className={styles.info}>You have clap: {count}</div>
+    </div>
   );
 };
 
