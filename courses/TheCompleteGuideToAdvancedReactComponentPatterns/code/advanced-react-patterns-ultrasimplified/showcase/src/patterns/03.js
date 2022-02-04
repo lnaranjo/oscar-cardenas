@@ -1,4 +1,5 @@
 import React, {
+  useRef,
   useMemo,
   useState,
   useEffect,
@@ -176,8 +177,15 @@ const MediumClap = ({ children, onClap }) => {
     clapTotalEl: clapTotalRef,
   });
 
+  const componentJustMount = useRef(true);
   useEffect(() => {
-    onClap && onClap(clapState);
+    if (!componentJustMount.current) {
+      onClap && onClap(clapState);
+    }
+
+    return () => {
+      componentJustMount.current = false;
+    };
   }, [count]);
 
   // save node
@@ -241,7 +249,7 @@ const Usage = () => {
         <MediumClap.Count />
         <MediumClap.Total />
       </MediumClap>
-      <div className={styles.info}>You have clap: {count}</div>
+      {!!count && <div className={styles.info}>You have clap: {count}</div>}
     </div>
   );
 };
