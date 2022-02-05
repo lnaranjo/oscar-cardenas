@@ -2,6 +2,7 @@ import React, {
   useRef,
   useState,
   useEffect,
+  useReducer,
   useCallback,
   useLayoutEffect,
 } from 'react';
@@ -157,17 +158,27 @@ const callFnsInSequence =
     fns.forEach((fn) => !!fn && fn(...args));
   };
 
-const useClapState = (initialState = INITIAL_STATE) => {
-  const [clapState, setClapState] = useState(initialState);
-  const { count, countTotal } = clapState;
+const reducer = ({ count, countTotal }, { type, payload }) => {
+  switch (type) {
+    case 'clap':
+      return {
+        isClicked: true,
+        count: Math.min(count + 1, MAXIMUM_USER_CLAP),
+        countTotal: (count < MAXIMUM_USER_CLAP && countTotal + 1) || countTotal,
+      };
 
-  const updateClapState = useCallback(() => {
-    setClapState(({ count, countTotal }) => ({
-      isClicked: true,
-      count: Math.min(count + 1, MAXIMUM_USER_CLAP),
-      countTotal: (count < MAXIMUM_USER_CLAP && countTotal + 1) || countTotal,
-    }));
-  }, [count, countTotal]);
+    case 'reset':
+      return payload;
+    default:
+      break;
+  }
+};
+
+const useClapState = (initialState = INITIAL_STATE) => {
+  const [clapState, dispatch] = useReducer(reducer, initialState);
+  const { count } = clapState;
+
+  const updateClapState = () => dispatch({ type: 'clap' });
 
   // props collection for 'click'
   const getToggleProps = ({ onClick, ...otherProps } = {}) => ({
@@ -182,10 +193,10 @@ const useClapState = (initialState = INITIAL_STATE) => {
   const initialStateRef = useRef(initialState);
   const reset = useCallback(() => {
     if (prevCount !== count) {
-      setClapState(initialStateRef.current);
+      dispatch({ type: 'reset', payload: initialStateRef.current });
       resetRef.current++;
     }
-  }, [prevCount, count, setClapState]);
+  }, [prevCount, count, dispatch]);
 
   // props collection for 'count'
   const getCounterProps = ({ ...otherProps }) => ({
