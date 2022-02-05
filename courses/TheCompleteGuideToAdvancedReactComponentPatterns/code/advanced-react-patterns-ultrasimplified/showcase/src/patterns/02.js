@@ -192,10 +192,6 @@ const MediumClap = () => {
   );
 };
 
-function getDisplayName(WrappedComponent) {
-  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
-}
-
 /** ====================================
     *        🔰USAGE
     Below's how a potential user

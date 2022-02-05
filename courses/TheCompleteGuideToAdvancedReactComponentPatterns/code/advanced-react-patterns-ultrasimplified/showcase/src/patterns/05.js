@@ -124,8 +124,6 @@ Smaller Component used by <MediumClap />
 const ClapIcon = ({ style: userStyle = {}, className }) => {
   const { isClicked } = useContext(MediumClapContext);
 
-  console.log({ isClicked });
-
   const classNames = [
     styles.icon,
     (isClicked && styles.checked) || '',
