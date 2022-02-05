@@ -12,7 +12,7 @@ import mojs from 'mo-js';
 import { generateRandomNumber } from '../utils/generateRandomNumber';
 
 import styles from './index.css';
-import userCustomStyles from './usage.css';
+import userStyles from './usage.css';
 
 /** ====================================
  *      Define custom context
@@ -124,10 +124,12 @@ Smaller Component used by <MediumClap />
 const ClapIcon = ({ style: userStyle = {}, className }) => {
   const { isClicked } = useContext(MediumClapContext);
 
+  console.log({ isClicked });
+
   const classNames = [
     styles.icon,
-    className,
     (isClicked && styles.checked) || '',
+    className,
   ]
     .join(' ')
     .trim();
@@ -165,7 +167,7 @@ const ClapCount = ({ style: userStyle = {}, className }) => {
 
 const CountTotal = ({ style: userStyle = {}, className }) => {
   const { countTotal, setRef } = useContext(MediumClapContext);
-  const classNames = [styles.totals, className].join(' ').trim();
+  const classNames = [styles.total, className].join(' ').trim();
   return (
     <span
       ref={setRef}
@@ -193,6 +195,7 @@ const MediumClap = ({
   onClap,
   children,
   className,
+  values = null,
   style: userStyles = {},
 }) => {
   const [{ clapRef, clapCountRef, clapTotalRef }, setRefs] = useState({});
@@ -207,14 +210,14 @@ const MediumClap = ({
 
   const componentJustMount = useRef(true);
   useEffect(() => {
-    if (!componentJustMount.current) {
+    if (!componentJustMount.current && !isControlled) {
       onClap && onClap(clapState);
     }
 
     return () => {
       componentJustMount.current = false;
     };
-  }, [count]);
+  }, [count, onClap, isControlled]);
 
   // save node
   const setRef = useCallback((node) => {
@@ -224,22 +227,31 @@ const MediumClap = ({
     }));
   }, []);
 
+  const isControlled = !!values && onClap;
   const handleClapClick = () => {
     animationTimeline.replay();
-
-    setClapState((prevState) => ({
-      isClicked: true,
-      count: Math.min(count + 1, MAXIMUM_USER_CLAP),
-      countTotal:
-        count < MAXIMUM_USER_CLAP
-          ? prevState.countTotal + 1
-          : prevState.countTotal,
-    }));
+    (isControlled && onClap()) ||
+      setClapState((prevState) => ({
+        isClicked: true,
+        count: Math.min(count + 1, MAXIMUM_USER_CLAP),
+        countTotal:
+          count < MAXIMUM_USER_CLAP
+            ? prevState.countTotal + 1
+            : prevState.countTotal,
+      }));
   };
 
+  const getState = useCallback(
+    () => (isControlled && values) || clapState,
+    [clapState, values, isControlled]
+  );
+
   const memoizedValues = useMemo(
-    () => ({ ...clapState, setRef }),
-    [clapState, setRef]
+    () => ({
+      ...getState(),
+      setRef,
+    }),
+    [getState, setRef]
   );
 
   const classNames = [styles.clap, className].join(' ').trim();
@@ -268,17 +280,45 @@ MediumClap.Total = CountTotal;
     Below's how a potential user
     may consume the component API
 ==================================== **/
+const INITIAL_STATE = {
+  count: 0,
+  countTotal: 2100,
+  isClicked: false,
+};
+
+const MAXIMUM_CLAP_VALUE = 10;
+
 const Usage = () => {
-  const [count, setCount] = useState(0);
-  const handleClap = (clapState) => setCount(clapState.count);
+  const [state, setState] = useState(INITIAL_STATE);
+
+  const handleClap = () => {
+    setState(({ count, countTotal }) => ({
+      isClicked: true,
+      count: Math.min(count + 1, MAXIMUM_CLAP_VALUE),
+      countTotal: (count < MAXIMUM_CLAP_VALUE && countTotal + 1) || countTotal,
+    }));
+  };
+
   return (
     <div style={{ width: '100%' }}>
-      <MediumClap onClap={handleClap} className={userCustomStyles.clap}>
-        <MediumClap.Icon className={userCustomStyles.icon} />
-        <MediumClap.Count className={userCustomStyles.count} />
-        <MediumClap.Total className={userCustomStyles.total} />
+      <MediumClap
+        values={state}
+        onClap={handleClap}
+        className={userStyles.clap}
+      >
+        <MediumClap.Icon className={userStyles.icon} />
+        <MediumClap.Count className={userStyles.count} />
+        <MediumClap.Total className={userStyles.total} />
       </MediumClap>
-      {!!count && <div className={styles.info}>You have clap: {count}</div>}
+      <MediumClap
+        values={state}
+        onClap={handleClap}
+        className={userStyles.clap}
+      >
+        <MediumClap.Icon className={userStyles.icon} />
+        <MediumClap.Count className={userStyles.count} />
+        <MediumClap.Total className={userStyles.total} />
+      </MediumClap>
     </div>
   );
 };
