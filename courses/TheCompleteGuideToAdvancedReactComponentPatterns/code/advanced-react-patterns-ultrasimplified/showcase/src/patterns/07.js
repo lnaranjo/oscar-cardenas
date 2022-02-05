@@ -187,19 +187,32 @@ const ClapIcon = ({ isClicked }) => {
   );
 };
 
-const ClapCount = ({ count, setRef }) => {
+const ClapCount = ({ count, setRef, ...restProps }) => {
   return (
-    <span ref={setRef} data-refkey="clapCountRef" className={styles.count}>
+    <span ref={setRef} className={styles.count} {...restProps}>
       +{count}
     </span>
   );
 };
 
-const CountTotal = ({ countTotal, setRef }) => {
+const CountTotal = ({ countTotal, setRef, ...restProps }) => {
   return (
-    <span ref={setRef} data-refkey="clapTotalRef" className={styles.total}>
+    <span ref={setRef} className={styles.total} {...restProps}>
       {countTotal}
     </span>
+  );
+};
+
+const ClapContainer = ({ children, setRef, handleClick, ...restProps }) => {
+  return (
+    <button
+      ref={setRef}
+      onClick={handleClick}
+      className={styles.clap}
+      {...restProps}
+    >
+      {children}
+    </button>
   );
 };
 
@@ -223,16 +236,19 @@ const MediumClap = () => {
   }, [count]);
 
   return (
-    <button
-      ref={setRef}
+    <ClapContainer
+      setRef={setRef}
       data-refkey="clapRef"
-      className={styles.clap}
-      onClick={updateClapState}
+      handleClick={updateClapState}
     >
       <ClapIcon isClicked={isClicked} />
-      <ClapCount count={count} setRef={setRef} />
-      <CountTotal countTotal={countTotal} setRef={setRef} />
-    </button>
+      <ClapCount count={count} setRef={setRef} data-refkey="clapCountRef" />
+      <CountTotal
+        setRef={setRef}
+        countTotal={countTotal}
+        data-refkey="clapTotalRef"
+      />
+    </ClapContainer>
   );
 };
 
