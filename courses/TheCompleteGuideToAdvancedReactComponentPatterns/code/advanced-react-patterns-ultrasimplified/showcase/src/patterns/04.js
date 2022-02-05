@@ -165,7 +165,7 @@ const ClapCount = ({ style: userStyle = {}, className }) => {
 
 const CountTotal = ({ style: userStyle = {}, className }) => {
   const { countTotal, setRef } = useContext(MediumClapContext);
-  const classNames = [styles.totals, className].join(' ').trim();
+  const classNames = [styles.total, className].join(' ').trim();
   return (
     <span
       ref={setRef}
