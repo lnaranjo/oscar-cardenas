@@ -139,6 +139,7 @@ const useDOMRef = () => {
 ==================================== **/
 const useClapState = (initialState = INITIAL_STATE) => {
   const [clapState, setClapState] = useState(initialState);
+  const { count, countTotal } = clapState;
 
   const updateClapState = useCallback(() => {
     setClapState(({ count, countTotal }) => ({
@@ -146,9 +147,28 @@ const useClapState = (initialState = INITIAL_STATE) => {
       count: Math.min(count + 1, MAXIMUM_USER_CLAP),
       countTotal: (count < MAXIMUM_USER_CLAP && countTotal + 1) || countTotal,
     }));
-  }, [clapState]);
+  }, [count, countTotal]);
 
-  return [clapState, updateClapState];
+  // props collection for 'click'
+  const toggleProps = {
+    onClick: updateClapState,
+    'aria-pressed': clapState.isClicked,
+  };
+
+  // props collection for 'count'
+  const counterProps = {
+    count,
+    'aria-valuemin': 0,
+    'aria-valuenow': count,
+    'aria-valuemax': MAXIMUM_USER_CLAP,
+  };
+
+  return {
+    clapState,
+    toggleProps,
+    counterProps,
+    updateClapState,
+  };
 };
 
 /** ====================================
@@ -217,9 +237,11 @@ const ClapContainer = ({ children, setRef, handleClick, ...restProps }) => {
 };
 
 /** ====================================
- *      🔰 MediumClap
+  *        🔰USAGE
+  Below's how a potential user
+  may consume the component API
 ==================================== **/
-const MediumClap = () => {
+const Usage = () => {
   const [{ clapRef, clapCountRef, clapTotalRef }, setRef] = useDOMRef();
 
   const animationTimeline = useClapAnimation({
@@ -228,7 +250,7 @@ const MediumClap = () => {
     clapTotalEl: clapTotalRef,
   });
 
-  const [clapState, updateClapState] = useClapState();
+  const { clapState, toggleProps, counterProps } = useClapState();
   const { count, countTotal, isClicked } = clapState;
 
   useEffectAfterMount(() => {
@@ -236,13 +258,9 @@ const MediumClap = () => {
   }, [count]);
 
   return (
-    <ClapContainer
-      setRef={setRef}
-      data-refkey="clapRef"
-      handleClick={updateClapState}
-    >
+    <ClapContainer setRef={setRef} data-refkey="clapRef" {...toggleProps}>
       <ClapIcon isClicked={isClicked} />
-      <ClapCount count={count} setRef={setRef} data-refkey="clapCountRef" />
+      <ClapCount setRef={setRef} data-refkey="clapCountRef" {...counterProps} />
       <CountTotal
         setRef={setRef}
         countTotal={countTotal}
@@ -250,15 +268,6 @@ const MediumClap = () => {
       />
     </ClapContainer>
   );
-};
-
-/** ====================================
-    *        🔰USAGE
-    Below's how a potential user
-    may consume the component API
-==================================== **/
-const Usage = () => {
-  return <MediumClap />;
 };
 
 export default Usage;
