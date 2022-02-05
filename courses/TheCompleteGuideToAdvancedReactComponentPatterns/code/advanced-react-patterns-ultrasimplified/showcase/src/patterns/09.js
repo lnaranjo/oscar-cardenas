@@ -9,11 +9,12 @@ import mojs from 'mo-js';
 import { generateRandomNumber } from '../utils/generateRandomNumber';
 
 import styles from './index.css';
+import userStyles from './usage.css';
 
 /** ====================================
  *      Constants
 ==================================== **/
-const MAXIMUM_USER_CLAP = 10;
+const MAXIMUM_USER_CLAP = 100;
 const INITIAL_STATE = {
   count: 0,
   isClicked: false,
@@ -134,6 +135,18 @@ const useDOMRef = () => {
   return [DOMRef, setRef];
 };
 
+/** ================================================
+ *      Custom hook for getting previous prop/state
+================================================ **/
+const usePrevious = (value) => {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+
+  return ref.current;
+};
+
 /** ====================================
  *      Custom hook for management clap
 ==================================== **/
@@ -163,6 +176,17 @@ const useClapState = (initialState = INITIAL_STATE) => {
     ...otherProps,
   });
 
+  // make a counter without side-effects
+  const resetRef = useRef(0);
+  const prevCount = usePrevious(count);
+  const initialStateRef = useRef(initialState);
+  const reset = useCallback(() => {
+    if (prevCount !== count) {
+      setClapState(initialStateRef.current);
+      resetRef.current++;
+    }
+  }, [prevCount, count, setClapState]);
+
   // props collection for 'count'
   const getCounterProps = ({ ...otherProps }) => ({
     count,
@@ -173,10 +197,12 @@ const useClapState = (initialState = INITIAL_STATE) => {
   });
 
   return {
+    reset,
     clapState,
     getToggleProps,
     getCounterProps,
     updateClapState,
+    resetDep: resetRef.current,
   };
 };
 
@@ -250,6 +276,12 @@ const ClapContainer = ({ children, setRef, handleClick, ...restProps }) => {
   Below's how a potential user
   may consume the component API
 ==================================== **/
+const userInitialState = {
+  count: 10,
+  isClicked: true,
+  countTotal: 1000,
+};
+
 const Usage = () => {
   const [{ clapRef, clapCountRef, clapTotalRef }, setRef] = useDOMRef();
 
@@ -259,33 +291,60 @@ const Usage = () => {
     clapTotalEl: clapTotalRef,
   });
 
-  const { clapState, getToggleProps, getCounterProps } = useClapState();
+  const { reset, resetDep, clapState, getToggleProps, getCounterProps } =
+    useClapState(userInitialState);
   const { count, countTotal, isClicked } = clapState;
+
+  // handling reset side effects
+  const [uploadingReset, setUpload] = useState(false);
+  useEffectAfterMount(() => {
+    setUpload(true);
+    const id = setTimeout(() => {
+      setUpload(false);
+    }, 3000);
+
+    return () => {
+      clearTimeout(id);
+    };
+  }, [resetDep]);
 
   useEffectAfterMount(() => {
     animationTimeline.replay();
   }, [count]);
 
   return (
-    <ClapContainer
-      setRef={setRef}
-      data-refkey="clapRef"
-      {...getToggleProps({
-        onClick: () => console.log('HELLO!'),
-      })}
-    >
-      <ClapIcon isClicked={isClicked} />
-      <ClapCount
+    <div>
+      <ClapContainer
         setRef={setRef}
-        data-refkey="clapCountRef"
-        {...getCounterProps()}
-      />
-      <CountTotal
-        setRef={setRef}
-        countTotal={countTotal}
-        data-refkey="clapTotalRef"
-      />
-    </ClapContainer>
+        data-refkey="clapRef"
+        {...getToggleProps({
+          onClick: () => console.log('HELLO!'),
+        })}
+      >
+        <ClapIcon isClicked={isClicked} />
+        <ClapCount
+          setRef={setRef}
+          data-refkey="clapCountRef"
+          {...getCounterProps()}
+        />
+        <CountTotal
+          setRef={setRef}
+          countTotal={countTotal}
+          data-refkey="clapTotalRef"
+        />
+      </ClapContainer>
+      <div>
+        <button className={userStyles.resetBtn} onClick={reset}>
+          Reset
+        </button>
+        <pre className={userStyles.resetMsg}>
+          {JSON.stringify({ count, countTotal, isClicked })}
+        </pre>
+        <pre className={userStyles.resetMsg}>
+          {uploadingReset && `Uploading reset ${resetDep}...`}
+        </pre>
+      </div>
+    </div>
   );
 };
 
