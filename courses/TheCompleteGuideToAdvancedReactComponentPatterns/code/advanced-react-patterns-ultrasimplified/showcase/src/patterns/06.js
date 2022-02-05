@@ -1,8 +1,24 @@
-import React, { useState, useCallback, useLayoutEffect } from 'react';
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+  useLayoutEffect,
+} from 'react';
 import mojs from 'mo-js';
 import { generateRandomNumber } from '../utils/generateRandomNumber';
 
 import styles from './index.css';
+
+/** ====================================
+ *      Constants
+==================================== **/
+const MAXIMUM_USER_CLAP = 10;
+const INITIAL_STATE = {
+  count: 0,
+  isClicked: false,
+  countTotal: generateRandomNumber(500, 10000),
+};
 
 /** ====================================
  *      Custom hook for animation
@@ -102,6 +118,56 @@ const useClapAnimation = ({ clapEl, clapCountEl, clapTotalEl }) => {
 };
 
 /** ====================================
+ *      Custom hook for DOM management
+==================================== **/
+const useDOMRef = () => {
+  const [DOMRef, setRefState] = useState({});
+
+  // save node
+  const setRef = useCallback((node) => {
+    setRefState((prevRefs) => ({
+      ...prevRefs,
+      [node.dataset.refkey]: node,
+    }));
+  }, []);
+
+  return [DOMRef, setRef];
+};
+
+/** ====================================
+ *      Custom hook for management clap
+==================================== **/
+const useClapState = (initialState = INITIAL_STATE) => {
+  const [clapState, setClapState] = useState(initialState);
+
+  const updateClapState = useCallback(() => {
+    setClapState(({ count, countTotal }) => ({
+      isClicked: true,
+      count: Math.min(count + 1, MAXIMUM_USER_CLAP),
+      countTotal: (count < MAXIMUM_USER_CLAP && countTotal + 1) || countTotal,
+    }));
+  }, [clapState]);
+
+  return [clapState, updateClapState];
+};
+
+/** ====================================
+ *      Custom hook for after mount
+==================================== **/
+const useEffectAfterMount = (callback, dependencyList) => {
+  const componentJustMount = useRef(true);
+  useEffect(() => {
+    if (!componentJustMount.current) {
+      return callback();
+    }
+
+    return () => {
+      componentJustMount.current = false;
+    };
+  }, dependencyList);
+};
+
+/** ====================================
  *      🔰SubComponents
 Smaller Component used by <MediumClap />
 ==================================== **/
@@ -140,18 +206,8 @@ const CountTotal = ({ countTotal, setRef }) => {
 /** ====================================
  *      🔰 MediumClap
 ==================================== **/
-const MAXIMUM_USER_CLAP = 10;
-
-const initialState = {
-  count: 0,
-  isClicked: false,
-  countTotal: generateRandomNumber(500, 10000),
-};
-
 const MediumClap = () => {
-  const [{ clapRef, clapCountRef, clapTotalRef }, setRefs] = useState({});
-  const [clapState, setClapState] = useState(initialState);
-  const { count, countTotal, isClicked } = clapState;
+  const [{ clapRef, clapCountRef, clapTotalRef }, setRef] = useDOMRef();
 
   const animationTimeline = useClapAnimation({
     clapEl: clapRef,
@@ -159,31 +215,19 @@ const MediumClap = () => {
     clapTotalEl: clapTotalRef,
   });
 
-  // save node
-  const setRef = useCallback((node) => {
-    setRefs((prevRefs) => ({
-      ...prevRefs,
-      [node.dataset.refkey]: node,
-    }));
-  }, []);
+  const [clapState, updateClapState] = useClapState();
+  const { count, countTotal, isClicked } = clapState;
 
-  const handleClapClick = () => {
-    // 👉 prop from HOC
+  useEffectAfterMount(() => {
     animationTimeline.replay();
-
-    setClapState({
-      isClicked: true,
-      count: Math.min(count + 1, MAXIMUM_USER_CLAP),
-      countTotal: count < MAXIMUM_USER_CLAP ? countTotal + 1 : countTotal,
-    });
-  };
+  }, [count]);
 
   return (
     <button
       ref={setRef}
       data-refkey="clapRef"
       className={styles.clap}
-      onClick={handleClapClick}
+      onClick={updateClapState}
     >
       <ClapIcon isClicked={isClicked} />
       <ClapCount count={count} setRef={setRef} />
@@ -191,10 +235,6 @@ const MediumClap = () => {
     </button>
   );
 };
-
-function getDisplayName(WrappedComponent) {
-  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
-}
 
 /** ====================================
     *        🔰USAGE
