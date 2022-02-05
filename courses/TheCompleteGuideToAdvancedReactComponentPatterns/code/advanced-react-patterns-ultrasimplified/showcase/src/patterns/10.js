@@ -220,6 +220,13 @@ const useClapState = (
   };
 };
 
+//  to export: useClapState, internalReducer
+useClapState.reducer = internalReducer;
+useClapState.types = {
+  clap: 'clap',
+  reset: 'reset',
+};
+
 /** ====================================
  *      Custom hook for after mount
 ==================================== **/
@@ -305,20 +312,15 @@ const Usage = () => {
     clapTotalEl: clapTotalRef,
   });
 
-  const reducer = ({ count, countTotal }, { type, payload }) => {
-    switch (type) {
-      case 'clap':
-        return {
-          isClicked: true,
-          count: Math.min(count + 1, 4),
-          countTotal: (count < 4 && countTotal + 1) || countTotal,
-        };
+  const [timesClapped, setTimeClapped] = useState(0);
+  const isClappedTooMuch = timesClapped >= 7;
 
-      case 'reset':
-        return payload;
-      default:
-        break;
+  // extends internal reducer
+  const reducer = (state, action) => {
+    if (action.type === useClapState.types.clap && isClappedTooMuch) {
+      return state;
     }
+    return useClapState.reducer(state, action);
   };
 
   const { reset, resetDep, clapState, getToggleProps, getCounterProps } =
@@ -329,6 +331,7 @@ const Usage = () => {
   const [uploadingReset, setUpload] = useState(false);
   useEffectAfterMount(() => {
     setUpload(true);
+    setTimeClapped(0);
     const id = setTimeout(() => {
       setUpload(false);
     }, 3000);
@@ -342,13 +345,17 @@ const Usage = () => {
     animationTimeline.replay();
   }, [count]);
 
+  const handleClick = () => {
+    setTimeClapped((times) => times + 1);
+  };
+
   return (
     <div>
       <ClapContainer
         setRef={setRef}
         data-refkey="clapRef"
         {...getToggleProps({
-          onClick: () => console.log('HELLO!'),
+          onClick: handleClick,
         })}
       >
         <ClapIcon isClicked={isClicked} />
@@ -368,10 +375,14 @@ const Usage = () => {
           Reset
         </button>
         <pre className={userStyles.resetMsg}>
-          {JSON.stringify({ count, countTotal, isClicked })}
+          {JSON.stringify({ timesClapped, count, countTotal })}
         </pre>
         <pre className={userStyles.resetMsg}>
           {uploadingReset && `Uploading reset ${resetDep}...`}
+        </pre>
+        <pre style={{ color: 'red' }}>
+          {isClappedTooMuch &&
+            'You have clapped too much. Do not be so generous...'}
         </pre>
       </div>
     </div>
