@@ -158,7 +158,7 @@ const callFnsInSequence =
     fns.forEach((fn) => !!fn && fn(...args));
   };
 
-const reducer = ({ count, countTotal }, { type, payload }) => {
+const internalReducer = ({ count, countTotal }, { type, payload }) => {
   switch (type) {
     case 'clap':
       return {
@@ -174,7 +174,10 @@ const reducer = ({ count, countTotal }, { type, payload }) => {
   }
 };
 
-const useClapState = (initialState = INITIAL_STATE) => {
+const useClapState = (
+  initialState = INITIAL_STATE,
+  reducer = internalReducer
+) => {
   const [clapState, dispatch] = useReducer(reducer, initialState);
   const { count } = clapState;
 
@@ -288,7 +291,7 @@ const ClapContainer = ({ children, setRef, handleClick, ...restProps }) => {
   may consume the component API
 ==================================== **/
 const userInitialState = {
-  count: 10,
+  count: 0,
   isClicked: true,
   countTotal: 1000,
 };
@@ -302,8 +305,24 @@ const Usage = () => {
     clapTotalEl: clapTotalRef,
   });
 
+  const reducer = ({ count, countTotal }, { type, payload }) => {
+    switch (type) {
+      case 'clap':
+        return {
+          isClicked: true,
+          count: Math.min(count + 1, 4),
+          countTotal: (count < 4 && countTotal + 1) || countTotal,
+        };
+
+      case 'reset':
+        return payload;
+      default:
+        break;
+    }
+  };
+
   const { reset, resetDep, clapState, getToggleProps, getCounterProps } =
-    useClapState(userInitialState);
+    useClapState(userInitialState, reducer);
   const { count, countTotal, isClicked } = clapState;
 
   // handling reset side effects
